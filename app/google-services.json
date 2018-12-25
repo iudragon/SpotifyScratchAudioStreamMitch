@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "300337945834",
+    "firebase_url": "https://spotifyscratchaudiostreammitch.firebaseio.com",
+    "project_id": "spotifyscratchaudiostreammitch",
+    "storage_bucket": "spotifyscratchaudiostreammitch.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300337945834:android:4bb44717ab449c59",
+        "android_client_info": {
+          "package_name": "dragon.bakuman.iu.spotifyscratchaudiostreammitch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "300337945834-79dsk2qacc87ae0nb17bc9qbt0jjfj0m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dragon.bakuman.iu.spotifyscratchaudiostreammitch",
+            "certificate_hash": "12fb8aeff6dafc00932b64c7ae6207f6aaa2f2e8"
+          }
+        },
+        {
+          "client_id": "300337945834-o06s7kphl6063p37r7ipc1krqb3ubmud.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoClJGierrAnNu5i0pPQToavf3NVp0Aa4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "300337945834-o06s7kphl6063p37r7ipc1krqb3ubmud.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
