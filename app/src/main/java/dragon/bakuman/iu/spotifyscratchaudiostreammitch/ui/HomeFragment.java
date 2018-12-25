@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import dragon.bakuman.iu.spotifyscratchaudiostreammitch.R;
+import dragon.bakuman.iu.spotifyscratchaudiostreammitch.adapters.HomeRecyclerAdapter;
 
 
-public class HomeFragment extends Fragment
-{
+public class HomeFragment extends Fragment implements HomeRecyclerAdapter.IHomeSelector {
 
     private static final String TAG = "HomeFragment";
 
@@ -29,6 +29,10 @@ public class HomeFragment extends Fragment
     }
 
 
+    @Override
+    public void onCategorySelected(int position) {
+
+    }
 }
 
 
