@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerAdapter.IHomeS
     private void retrieveCategories() {
 
 
-        mIMainActivity.showPrrogressBar();
+        mIMainActivity.showProgressBar();
 
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -7,9 +7,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:queryBackground">@color/green</item>
+        <item name="android:queryBackground" tools:targetApi="lollipop">@color/green</item>
         <item name="android:editTextColor">@android:color/white</item>
-        <item name="android:searchIcon">@drawable/ic_search_white_24dp</item>
+        <item name="android:searchIcon" tools:targetApi="lollipop">@drawable/ic_search_white_24dp</item>
         <item name="android:textColorSecondary">@color/white</item>
     </style>
 

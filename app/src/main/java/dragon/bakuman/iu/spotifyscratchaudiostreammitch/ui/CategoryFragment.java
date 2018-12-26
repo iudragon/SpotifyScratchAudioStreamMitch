@@ -24,11 +24,12 @@ import java.util.ArrayList;
 
 import dragon.bakuman.iu.spotifyscratchaudiostreammitch.R;
 import dragon.bakuman.iu.spotifyscratchaudiostreammitch.adapters.CategoryRecyclerAdapter;
-import dragon.bakuman.iu.spotifyscratchaudiostreammitch.adapters.HomeRecyclerAdapter;
 import dragon.bakuman.iu.spotifyscratchaudiostreammitch.models.Artist;
 
 
-public class CategoryFragment extends Fragment implements CategoryRecyclerAdapter.ICategorySelector {
+public class CategoryFragment extends Fragment implements
+        CategoryRecyclerAdapter.ICategorySelector
+{
 
     private static final String TAG = "CategoryFragment";
 
@@ -41,24 +42,21 @@ public class CategoryFragment extends Fragment implements CategoryRecyclerAdapte
     private CategoryRecyclerAdapter mAdapter;
     private ArrayList<Artist> mArtists = new ArrayList<>();
     private IMainActivity mIMainActivity;
-    private String mSelectedCategory;
+    public String mSelectedCategory;
 
     public static CategoryFragment newInstance(String category) {
-
         CategoryFragment categoryFragment = new CategoryFragment();
         Bundle args = new Bundle();
         args.putString("category", category);
         categoryFragment.setArguments(args);
         return categoryFragment;
-
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        if(getArguments() != null){
             mSelectedCategory = getArguments().getString("category");
-
         }
     }
 
@@ -73,11 +71,13 @@ public class CategoryFragment extends Fragment implements CategoryRecyclerAdapte
         initRecyclerView(view);
     }
 
-    private void retrieveArtists() {
+    public void retrieveArtists(){
+        mIMainActivity.showProgressBar();
 
-        mIMainActivity.showPrrogressBar();
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        Query query = firestore.collection(getString(R.string.collection_audio))
+
+        Query query  = firestore
+                .collection(getString(R.string.collection_audio))
                 .document(getString(R.string.document_categories))
                 .collection(mSelectedCategory);
 
@@ -86,31 +86,23 @@ public class CategoryFragment extends Fragment implements CategoryRecyclerAdapte
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-
                         mArtists.add(document.toObject(Artist.class));
                     }
-
                 } else {
-
-                    Log.d(TAG, "onComplete: error getting docs"+ task.getException());
+                    Log.d(TAG, "Error getting documents: ", task.getException());
                 }
-                updateDataset();
+                updateDataSet();
             }
         });
-
     }
 
-    private void updateDataset(){
-
-        mIMainActivity.hideProgressBar();
+    private void updateDataSet(){
         mAdapter.notifyDataSetChanged();
-
+        mIMainActivity.hideProgressBar();
     }
 
-    private void initRecyclerView(View view) {
-
-        if (mRecyclerView == null) {
-
+    private void initRecyclerView(View view){
+        if(mRecyclerView == null){
             mRecyclerView = view.findViewById(R.id.recycler_view);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             mAdapter = new CategoryRecyclerAdapter(getActivity(), mArtists, this);
@@ -120,30 +112,14 @@ public class CategoryFragment extends Fragment implements CategoryRecyclerAdapte
 
     }
 
-
-    @Override
-    public void onArtistSelected(int position) {
-
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mIMainActivity = (IMainActivity) getActivity();
     }
+
+    @Override
+    public void onArtistSelected(int position) {
+
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
