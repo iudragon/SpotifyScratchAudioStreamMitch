@@ -122,13 +122,13 @@ public class PlaylistFragment extends Fragment implements
                 .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, mSelectedArtist.getImage())
                 .build();
 
-//        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID));
-//        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_DATE));
-//        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_ARTIST));
-//        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_TITLE));
-//        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI));
-//        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION));
-//        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI));
+        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID));
+        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_DATE));
+        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_ARTIST));
+        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_TITLE));
+        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI));
+        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION));
+        Log.d(TAG, "addToMediaList: MediaMetaData: " + media.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI));
         mMediaList.add(media);
     }
 

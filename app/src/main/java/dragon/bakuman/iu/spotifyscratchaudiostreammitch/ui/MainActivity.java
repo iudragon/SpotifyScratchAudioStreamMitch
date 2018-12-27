@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity
                 .replace(R.id.main_container,
                         PlaylistFragment.newInstance(
                                 "Podcasts",
-                                new Artist("CodingWithMitch",
-                                        "https://assets.blubrry.com/coverart/orig/654497-584077.png",
-                                        "m2BE0t4z0raEqqqgHXj4")
+                                new Artist("SHINEE",
+                                        "https://2.bp.blogspot.com/-NDMZIvokJC0/UlfCmYrUbaI/AAAAAAAAXWk/lWwnTAfaqD0/w400-h261-p/SHINee.jpg",
+                                        "ex78KhThnxFThOn3QjyJ")
                         )).commit();
     }
 
