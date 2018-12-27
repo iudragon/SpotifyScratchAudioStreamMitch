@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,8 +29,7 @@ import dragon.bakuman.iu.spotifyscratchaudiostreammitch.models.Artist;
 
 
 public class PlaylistFragment extends Fragment implements
-        PlaylistRecyclerAdapter.IMediaSelector
-{
+        PlaylistRecyclerAdapter.IMediaSelector {
 
     private static final String TAG = "PlaylistFragment";
 
@@ -58,7 +58,7 @@ public class PlaylistFragment extends Fragment implements
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
+        if (!hidden) {
             mIMainActivity.setActionBarTitle(mSelectedArtist.getTitle());
         }
     }
@@ -67,10 +67,12 @@ public class PlaylistFragment extends Fragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null){
+        if (getArguments() != null) {
             mSelectedCategory = getArguments().getString("category");
             mSelectedArtist = getArguments().getParcelable("artist");
         }
+
+        setRetainInstance(true);
     }
 
     @Override
@@ -85,13 +87,13 @@ public class PlaylistFragment extends Fragment implements
         mIMainActivity.setActionBarTitle(mSelectedArtist.getTitle());
     }
 
-    public void retrieveMedia(){
+    public void retrieveMedia() {
         Log.d(TAG, "retrieveMedia: called.");
         mIMainActivity.showProgressBar();
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        Query query  = firestore
+        Query query = firestore
                 .collection(getString(R.string.collection_audio))
                 .document(getString(R.string.document_categories))
                 .collection(mSelectedCategory)
@@ -117,9 +119,10 @@ public class PlaylistFragment extends Fragment implements
 
     /**
      * Translate the Firestore data into something the MediaBrowserService can deal with (MediaMetaDataCompat objects)
+     *
      * @param document
      */
-    private void addToMediaList(QueryDocumentSnapshot document){
+    private void addToMediaList(QueryDocumentSnapshot document) {
 
         MediaMetadataCompat media = new MediaMetadataCompat.Builder()
                 .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, document.getString(getString(R.string.field_media_id)))
@@ -141,17 +144,19 @@ public class PlaylistFragment extends Fragment implements
         mMediaList.add(media);
     }
 
-    private void initRecyclerView(View view){
-        if(mRecyclerView == null){
-            mRecyclerView = view.findViewById(R.id.recycler_view);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mAdapter = new PlaylistRecyclerAdapter(getActivity(), mMediaList, this);
-            mRecyclerView.setAdapter(mAdapter);
+    private void initRecyclerView(View view) {
+
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mAdapter = new PlaylistRecyclerAdapter(getActivity(), mMediaList, this);
+        mRecyclerView.setAdapter(mAdapter);
+
+        if (mMediaList.size() == 0) {
             retrieveMedia();
         }
     }
 
-    private void updateDataSet(){
+    private void updateDataSet() {
         mAdapter.notifyDataSetChanged();
         mIMainActivity.hideProgressBar();
     }

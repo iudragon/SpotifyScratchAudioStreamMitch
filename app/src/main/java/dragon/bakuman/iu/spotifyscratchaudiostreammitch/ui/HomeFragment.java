@@ -27,8 +27,7 @@ import dragon.bakuman.iu.spotifyscratchaudiostreammitch.adapters.HomeRecyclerAda
 
 
 public class HomeFragment extends Fragment implements
-        HomeRecyclerAdapter.IHomeSelector
-{
+        HomeRecyclerAdapter.IHomeSelector {
 
     private static final String TAG = "HomeFragment";
 
@@ -48,9 +47,15 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
+        if (!hidden) {
             mIMainActivity.setActionBarTitle(getString(R.string.categories));
         }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -65,31 +70,34 @@ public class HomeFragment extends Fragment implements
         mIMainActivity.setActionBarTitle(getString(R.string.categories));
     }
 
-    private void initRecyclerView(View view){
-        if(mRecyclerView == null){
-            mRecyclerView = view.findViewById(R.id.recycler_view);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mAdapter = new HomeRecyclerAdapter(mCategories, getActivity(),this);
-            mRecyclerView.setAdapter(mAdapter);
+    private void initRecyclerView(View view) {
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mAdapter = new HomeRecyclerAdapter(mCategories, getActivity(), this);
+        mRecyclerView.setAdapter(mAdapter);
+
+        if (mCategories.size() == 0) {
+
             retrieveCategories();
+
         }
     }
 
-    public void retrieveCategories(){
+    public void retrieveCategories() {
         mIMainActivity.showProgressBar();
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        DocumentReference ref  = firestore
+        DocumentReference ref = firestore
                 .collection(getString(R.string.collection_audio))
                 .document(getString(R.string.document_categories));
 
         ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
-                    HashMap<String, String> categoriesMap = (HashMap)doc.getData().get(getString(R.string.field_categories));
+                    HashMap<String, String> categoriesMap = (HashMap) doc.getData().get(getString(R.string.field_categories));
                     mCategories.addAll(categoriesMap.keySet());
                 }
                 updateDataSet();
@@ -98,7 +106,7 @@ public class HomeFragment extends Fragment implements
 
     }
 
-    private void updateDataSet(){
+    private void updateDataSet() {
         mAdapter.notifyDataSetChanged();
         mIMainActivity.hideProgressBar();
     }

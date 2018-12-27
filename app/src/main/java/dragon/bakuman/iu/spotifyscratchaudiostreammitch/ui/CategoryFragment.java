@@ -28,8 +28,7 @@ import dragon.bakuman.iu.spotifyscratchaudiostreammitch.models.Artist;
 
 
 public class CategoryFragment extends Fragment implements
-        CategoryRecyclerAdapter.ICategorySelector
-{
+        CategoryRecyclerAdapter.ICategorySelector {
 
     private static final String TAG = "CategoryFragment";
 
@@ -55,7 +54,7 @@ public class CategoryFragment extends Fragment implements
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
+        if (!hidden) {
             mIMainActivity.setActionBarTitle(mSelectedCategory);
         }
     }
@@ -63,9 +62,12 @@ public class CategoryFragment extends Fragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null){
+        if (getArguments() != null) {
             mSelectedCategory = getArguments().getString("category");
+
         }
+
+        setRetainInstance(true);
     }
 
     @Override
@@ -80,12 +82,12 @@ public class CategoryFragment extends Fragment implements
         mIMainActivity.setActionBarTitle(mSelectedCategory);
     }
 
-    public void retrieveArtists(){
+    public void retrieveArtists() {
         mIMainActivity.showProgressBar();
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        Query query  = firestore
+        Query query = firestore
                 .collection(getString(R.string.collection_audio))
                 .document(getString(R.string.document_categories))
                 .collection(mSelectedCategory);
@@ -105,19 +107,23 @@ public class CategoryFragment extends Fragment implements
         });
     }
 
-    private void updateDataSet(){
+    private void updateDataSet() {
         mAdapter.notifyDataSetChanged();
         mIMainActivity.hideProgressBar();
     }
 
-    private void initRecyclerView(View view){
-        if(mRecyclerView == null){
-            mRecyclerView = view.findViewById(R.id.recycler_view);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mAdapter = new CategoryRecyclerAdapter(getActivity(), mArtists, this);
-            mRecyclerView.setAdapter(mAdapter);
+    private void initRecyclerView(View view) {
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mAdapter = new CategoryRecyclerAdapter(getActivity(), mArtists, this);
+        mRecyclerView.setAdapter(mAdapter);
+
+        if (mArtists.size() == 0) {
+
             retrieveArtists();
+
         }
+
 
     }
 
