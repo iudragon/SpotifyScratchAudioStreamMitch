@@ -55,6 +55,14 @@ public class PlaylistFragment extends Fragment implements
         return playlistFragment;
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            mIMainActivity.setActionBarTitle(mSelectedArtist.getTitle());
+        }
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +82,7 @@ public class PlaylistFragment extends Fragment implements
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         initRecyclerView(view);
+        mIMainActivity.setActionBarTitle(mSelectedArtist.getTitle());
     }
 
     public void retrieveMedia(){

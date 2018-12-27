@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity
     }
 
     private void loadFragment(Fragment fragment, boolean lateralMovement){
-
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         if(lateralMovement){
@@ -51,13 +50,12 @@ public class MainActivity extends AppCompatActivity implements IMainActivity
         }
         else if(fragment instanceof CategoryFragment){
             tag = getString(R.string.fragment_category);
-            transaction.addToBackStack(getString(R.string.fragment_category));
+            transaction.addToBackStack(tag);
         }
         else if(fragment instanceof PlaylistFragment){
             tag = getString(R.string.fragment_playlist);
-            transaction.addToBackStack(getString(R.string.fragment_playlist));
+            transaction.addToBackStack(tag);
         }
-
         transaction.add(R.id.main_container, fragment, tag);
         transaction.commit();
 
@@ -100,6 +98,24 @@ public class MainActivity extends AppCompatActivity implements IMainActivity
         super.onBackPressed();
     }
 
+
+    @Override
+    public void onCategorySelected(String category) {
+        Log.d(TAG, "onCategorySelected: clicked.");
+        loadFragment(CategoryFragment.newInstance(category), true);
+    }
+
+    @Override
+    public void onArtistSelected(String category, Artist artist) {
+        Log.d(TAG, "onArtistSelected: clicked.");
+        loadFragment(PlaylistFragment.newInstance(category, artist), true);
+    }
+
+    @Override
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
     @Override
     public void showProgressBar() {
         mProgressBar.setVisibility(View.VISIBLE);
@@ -109,24 +125,4 @@ public class MainActivity extends AppCompatActivity implements IMainActivity
     public void hideProgressBar() {
         mProgressBar.setVisibility(View.GONE);
     }
-
-    @Override
-    public void onCategorySelected(String category) {
-        loadFragment(CategoryFragment.newInstance(category), true);
-    }
-
-    @Override
-    public void onArtistSelected(String category, Artist artist) {
-        Log.d(TAG, "onArtistSelected: called.");
-        loadFragment(PlaylistFragment.newInstance(category, artist), true);
-    }
 }
-
-
-
-
-
-
-
-
-

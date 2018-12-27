@@ -46,6 +46,14 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            mIMainActivity.setActionBarTitle(getString(R.string.categories));
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
@@ -54,6 +62,7 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         initRecyclerView(view);
+        mIMainActivity.setActionBarTitle(getString(R.string.categories));
     }
 
     private void initRecyclerView(View view){
