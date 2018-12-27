@@ -1,6 +1,8 @@
 package dragon.bakuman.iu.spotifyscratchaudiostreammitch.ui;
 
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.ProgressBar;
 
 import dragon.bakuman.iu.spotifyscratchaudiostreammitch.R;
 import dragon.bakuman.iu.spotifyscratchaudiostreammitch.models.Artist;
+import dragon.bakuman.iu.spotifyscratchaudiostreammitch.util.MainActivityFragmentManager;
 
 
 public class MainActivity extends AppCompatActivity implements IMainActivity
@@ -27,31 +30,32 @@ public class MainActivity extends AppCompatActivity implements IMainActivity
         setContentView(R.layout.activity_main);
         mProgressBar = findViewById(R.id.progress_bar);
 
-//        testHomeFragment();
-//        testCategoryFragment();
-        testPlaylistFragment();
+        loadFragment(HomeFragment.newInstance(), true);
     }
 
-    private void testPlaylistFragment(){
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container,
-                        PlaylistFragment.newInstance(
-                                "Podcasts",
-                                new Artist("SHINEE",
-                                        "https://2.bp.blogspot.com/-NDMZIvokJC0/UlfCmYrUbaI/AAAAAAAAXWk/lWwnTAfaqD0/w400-h261-p/SHINee.jpg",
-                                        "ex78KhThnxFThOn3QjyJ")
-                        )).commit();
-    }
+    private void loadFragment(Fragment fragment, boolean lateralMovement){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
+        if(lateralMovement){
+            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+        }
 
-    private void testCategoryFragment(){
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, CategoryFragment.newInstance("Podcasts")).commit();
-    }
+        String tag = "";
+        if(fragment instanceof HomeFragment){
+            tag = getString(R.string.fragment_home);
+        }
+        else if(fragment instanceof CategoryFragment){
+            tag = getString(R.string.fragment_category);
+            transaction.addToBackStack(tag);
+        }
+        else if(fragment instanceof PlaylistFragment){
+            tag = getString(R.string.fragment_playlist);
+            transaction.addToBackStack(tag);
+        }
+        transaction.add(R.id.main_container, fragment, tag);
+        transaction.commit();
 
-    private void testHomeFragment(){
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, HomeFragment.newInstance()).commit();
+        MainActivityFragmentManager.getInstance().addFragment(fragment);
     }
 
     @Override
@@ -64,20 +68,3 @@ public class MainActivity extends AppCompatActivity implements IMainActivity
         mProgressBar.setVisibility(View.GONE);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
