@@ -1,12 +1,14 @@
 package dragon.bakuman.iu.spotifyscratchaudiostreammitch.ui;
 
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+
+
 
 import java.util.ArrayList;
 
@@ -32,10 +34,11 @@ public class MainActivity extends AppCompatActivity implements IMainActivity
         setContentView(R.layout.activity_main);
         mProgressBar = findViewById(R.id.progress_bar);
 
-        loadFragment(HomeFragment.newInstance(), true);
+        loadFragment(HomeFragment.newInstance(), false);
     }
 
     private void loadFragment(Fragment fragment, boolean lateralMovement){
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         if(lateralMovement){
@@ -48,12 +51,13 @@ public class MainActivity extends AppCompatActivity implements IMainActivity
         }
         else if(fragment instanceof CategoryFragment){
             tag = getString(R.string.fragment_category);
-            transaction.addToBackStack(tag);
+            transaction.addToBackStack(getString(R.string.fragment_category));
         }
         else if(fragment instanceof PlaylistFragment){
             tag = getString(R.string.fragment_playlist);
-            transaction.addToBackStack(tag);
+            transaction.addToBackStack(getString(R.string.fragment_playlist));
         }
+
         transaction.add(R.id.main_container, fragment, tag);
         transaction.commit();
 
@@ -105,7 +109,24 @@ public class MainActivity extends AppCompatActivity implements IMainActivity
     public void hideProgressBar() {
         mProgressBar.setVisibility(View.GONE);
     }
+
+    @Override
+    public void onCategorySelected(String category) {
+        loadFragment(CategoryFragment.newInstance(category), true);
+    }
+
+    @Override
+    public void onArtistSelected(String category, Artist artist) {
+        Log.d(TAG, "onArtistSelected: called.");
+        loadFragment(PlaylistFragment.newInstance(category, artist), true);
+    }
 }
+
+
+
+
+
+
 
 
 

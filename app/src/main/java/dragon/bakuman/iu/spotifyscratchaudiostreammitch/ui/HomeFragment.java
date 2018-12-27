@@ -26,7 +26,9 @@ import dragon.bakuman.iu.spotifyscratchaudiostreammitch.R;
 import dragon.bakuman.iu.spotifyscratchaudiostreammitch.adapters.HomeRecyclerAdapter;
 
 
-public class HomeFragment extends Fragment implements HomeRecyclerAdapter.IHomeSelector {
+public class HomeFragment extends Fragment implements
+        HomeRecyclerAdapter.IHomeSelector
+{
 
     private static final String TAG = "HomeFragment";
 
@@ -40,10 +42,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerAdapter.IHomeS
     private IMainActivity mIMainActivity;
 
     public static HomeFragment newInstance() {
-
         return new HomeFragment();
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,60 +51,52 @@ public class HomeFragment extends Fragment implements HomeRecyclerAdapter.IHomeS
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         initRecyclerView(view);
     }
 
-    private void retrieveCategories() {
+    private void initRecyclerView(View view){
+        if(mRecyclerView == null){
+            mRecyclerView = view.findViewById(R.id.recycler_view);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mAdapter = new HomeRecyclerAdapter(mCategories, getActivity(),this);
+            mRecyclerView.setAdapter(mAdapter);
+            retrieveCategories();
+        }
+    }
 
-
+    public void retrieveCategories(){
         mIMainActivity.showProgressBar();
 
-
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        DocumentReference ref = firestore.collection(getString(R.string.collection_audio))
+
+        DocumentReference ref  = firestore
+                .collection(getString(R.string.collection_audio))
                 .document(getString(R.string.document_categories));
 
         ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
+                if(task.isSuccessful()){
                     DocumentSnapshot doc = task.getResult();
-
-                    Log.d(TAG, "onComplete: " + doc);
-
-                    HashMap<String, String> categoriesMap = (HashMap) doc.getData().get("categories");
+                    HashMap<String, String> categoriesMap = (HashMap)doc.getData().get(getString(R.string.field_categories));
                     mCategories.addAll(categoriesMap.keySet());
-
-
                 }
-
                 updateDataSet();
             }
         });
+
     }
 
-    private void updateDataSet() {
-
-        mIMainActivity.hideProgressBar();
+    private void updateDataSet(){
         mAdapter.notifyDataSetChanged();
-
+        mIMainActivity.hideProgressBar();
     }
 
-    private void initRecyclerView(View view) {
-
-        if (mRecyclerView == null) {
-
-            mRecyclerView = view.findViewById(R.id.recycler_view);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mAdapter = new HomeRecyclerAdapter(mCategories, getActivity(), this);
-            mRecyclerView.setAdapter(mAdapter);
-            retrieveCategories();
-        }
-
+    @Override
+    public void onCategorySelected(int position) {
+        mIMainActivity.onCategorySelected(mCategories.get(position));
     }
 
 
@@ -113,26 +105,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerAdapter.IHomeS
         super.onAttach(context);
         mIMainActivity = (IMainActivity) getActivity();
     }
-
-    @Override
-    public void onCategorySelected(int position) {
-
-        Log.d(TAG, "onCategorySelected: list item is clicked");
-
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
